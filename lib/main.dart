@@ -15,15 +15,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String name = "";
+  int name = 0;
 
   @override
   void initState() {
-    greet(name: "Snoxx").then((result) => {
-          setState(() {
-            name = result;
-          })
-        });
+    getGalleryIdsFromNozomi(language: "all", area: "popular", tag: "")
+        .then((result) => {
+              setState(() {
+                print(result.last);
+                name = result.first;
+              })
+            });
     super.initState();
   }
 

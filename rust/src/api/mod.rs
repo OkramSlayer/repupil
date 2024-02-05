@@ -3,3 +3,8 @@
 //
 
 pub mod gallery;
+
+pub mod utils{
+  pub mod generate_url;
+  pub mod get_data;
+}
