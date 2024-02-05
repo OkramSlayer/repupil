@@ -12,6 +12,7 @@ pub async fn get_gallery_ids_from_nozomi(
     language: String,
 ) -> HashSet<i32> {
     let nozomi_address: String = generate_url_by_area(area, tag, language);
+    println!("{}", nozomi_address);
     let gallery_ids: HashSet<i32> = get_data_from_url(nozomi_address).await;
     return gallery_ids;
 }

@@ -22,8 +22,7 @@ pub async fn get_data_from_url(nozomi_address: String) -> HashSet<i32> {
     let mut nozomi = HashSet::new();
     let mut cursor = Cursor::new(body);
 
-    while let Ok(value) = cursor.read_i32::<BigEndian>() {
-      print!("{}", value);
+    while let Ok(value) = cursor.read_i32::<BigEndian>(){
         nozomi.insert(value);
     }
 
