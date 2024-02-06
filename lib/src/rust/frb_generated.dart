@@ -66,6 +66,8 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 }
 
 abstract class RustLibApi extends BaseApi {
+  Future<void> getGalleryDataFromId({required int galleryId, dynamic hint});
+
   Future<Set<int>> getGalleryIdsFromNozomi(
       {String? area,
       required String tag,
@@ -82,8 +84,15 @@ abstract class RustLibApi extends BaseApi {
       required String language,
       dynamic hint});
 
+  Future<String> generateUrlByGalleryId({required int galleryId, dynamic hint});
+
+  Future<GalleryInfo> galleryInfoNewEmpty({dynamic hint});
+
   Future<Set<int>> getDataFromUrl(
       {required String nozomiAddress, dynamic hint});
+
+  Future<GalleryInfo> getGalleryDataFromUrl(
+      {required String galleryUrl, dynamic hint});
 }
 
 class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
@@ -93,6 +102,31 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     required super.generalizedFrbRustBinding,
     required super.portManager,
   });
+
+  @override
+  Future<void> getGalleryDataFromId({required int galleryId, dynamic hint}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_u_32(galleryId, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 3, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta: kGetGalleryDataFromIdConstMeta,
+      argValues: [galleryId],
+      apiImpl: this,
+      hint: hint,
+    ));
+  }
+
+  TaskConstMeta get kGetGalleryDataFromIdConstMeta => const TaskConstMeta(
+        debugName: "get_gallery_data_from_id",
+        argNames: ["galleryId"],
+      );
 
   @override
   Future<Set<int>> getGalleryIdsFromNozomi(
@@ -156,7 +190,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 3, port: port_);
+            funcId: 4, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -187,7 +221,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(tag, serializer);
         sse_encode_String(language, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 4, port: port_);
+            funcId: 5, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -206,6 +240,56 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<String> generateUrlByGalleryId(
+      {required int galleryId, dynamic hint}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_u_32(galleryId, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 6, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_String,
+        decodeErrorData: null,
+      ),
+      constMeta: kGenerateUrlByGalleryIdConstMeta,
+      argValues: [galleryId],
+      apiImpl: this,
+      hint: hint,
+    ));
+  }
+
+  TaskConstMeta get kGenerateUrlByGalleryIdConstMeta => const TaskConstMeta(
+        debugName: "generate_url_by_gallery_id",
+        argNames: ["galleryId"],
+      );
+
+  @override
+  Future<GalleryInfo> galleryInfoNewEmpty({dynamic hint}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 9, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_gallery_info,
+        decodeErrorData: null,
+      ),
+      constMeta: kGalleryInfoNewEmptyConstMeta,
+      argValues: [],
+      apiImpl: this,
+      hint: hint,
+    ));
+  }
+
+  TaskConstMeta get kGalleryInfoNewEmptyConstMeta => const TaskConstMeta(
+        debugName: "GalleryInfo_new_empty",
+        argNames: [],
+      );
+
+  @override
   Future<Set<int>> getDataFromUrl(
       {required String nozomiAddress, dynamic hint}) {
     return handler.executeNormal(NormalTask(
@@ -213,7 +297,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(nozomiAddress, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 5, port: port_);
+            funcId: 7, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_Set_i_32,
@@ -231,6 +315,32 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         argNames: ["nozomiAddress"],
       );
 
+  @override
+  Future<GalleryInfo> getGalleryDataFromUrl(
+      {required String galleryUrl, dynamic hint}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_String(galleryUrl, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 8, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_gallery_info,
+        decodeErrorData: null,
+      ),
+      constMeta: kGetGalleryDataFromUrlConstMeta,
+      argValues: [galleryUrl],
+      apiImpl: this,
+      hint: hint,
+    ));
+  }
+
+  TaskConstMeta get kGetGalleryDataFromUrlConstMeta => const TaskConstMeta(
+        debugName: "get_gallery_data_from_url",
+        argNames: ["galleryUrl"],
+      );
+
   @protected
   Set<int> dco_decode_Set_i_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -244,9 +354,143 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Artist dco_decode_artist(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return Artist(
+      artist: dco_decode_String(arr[0]),
+      url: dco_decode_String(arr[1]),
+    );
+  }
+
+  @protected
+  int dco_decode_box_autoadd_i_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as int;
+  }
+
+  @protected
+  Character dco_decode_character(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return Character(
+      character: dco_decode_String(arr[0]),
+      url: dco_decode_String(arr[1]),
+    );
+  }
+
+  @protected
+  GalleryFiles dco_decode_gallery_files(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 7)
+      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
+    return GalleryFiles(
+      width: dco_decode_i_32(arr[0]),
+      hash: dco_decode_String(arr[1]),
+      haswebp: dco_decode_i_32(arr[2]),
+      name: dco_decode_String(arr[3]),
+      height: dco_decode_i_32(arr[4]),
+      hasavif: dco_decode_i_32(arr[5]),
+      hasavifsmalltn: dco_decode_opt_box_autoadd_i_32(arr[6]),
+    );
+  }
+
+  @protected
+  GalleryInfo dco_decode_gallery_info(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 15)
+      throw Exception('unexpected arr length: expect 15 but see ${arr.length}');
+    return GalleryInfo(
+      id: dco_decode_String(arr[0]),
+      title: dco_decode_String(arr[1]),
+      japaneseTitle: dco_decode_opt_String(arr[2]),
+      language: dco_decode_opt_String(arr[3]),
+      type: dco_decode_String(arr[4]),
+      date: dco_decode_String(arr[5]),
+      artists: dco_decode_opt_list_artist(arr[6]),
+      groups: dco_decode_opt_list_group(arr[7]),
+      parodys: dco_decode_opt_list_parody(arr[8]),
+      tags: dco_decode_opt_list_tag(arr[9]),
+      related: dco_decode_list_prim_i_32_strict(arr[10]),
+      languages: dco_decode_list_language(arr[11]),
+      characters: dco_decode_opt_list_character(arr[12]),
+      sceneIndexes: dco_decode_opt_list_prim_i_32_strict(arr[13]),
+      files: dco_decode_list_gallery_files(arr[14]),
+    );
+  }
+
+  @protected
+  Group dco_decode_group(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return Group(
+      group: dco_decode_String(arr[0]),
+      url: dco_decode_String(arr[1]),
+    );
+  }
+
+  @protected
   int dco_decode_i_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
+  }
+
+  @protected
+  Language dco_decode_language(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    return Language(
+      galleryid: dco_decode_String(arr[0]),
+      url: dco_decode_String(arr[1]),
+      languageLocalname: dco_decode_String(arr[2]),
+      name: dco_decode_String(arr[3]),
+    );
+  }
+
+  @protected
+  List<Artist> dco_decode_list_artist(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_artist).toList();
+  }
+
+  @protected
+  List<Character> dco_decode_list_character(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_character).toList();
+  }
+
+  @protected
+  List<GalleryFiles> dco_decode_list_gallery_files(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_gallery_files).toList();
+  }
+
+  @protected
+  List<Group> dco_decode_list_group(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_group).toList();
+  }
+
+  @protected
+  List<Language> dco_decode_list_language(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_language).toList();
+  }
+
+  @protected
+  List<Parody> dco_decode_list_parody(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_parody).toList();
   }
 
   @protected
@@ -262,9 +506,89 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<Tag> dco_decode_list_tag(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_tag).toList();
+  }
+
+  @protected
   String? dco_decode_opt_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_String(raw);
+  }
+
+  @protected
+  int? dco_decode_opt_box_autoadd_i_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_i_32(raw);
+  }
+
+  @protected
+  List<Artist>? dco_decode_opt_list_artist(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_list_artist(raw);
+  }
+
+  @protected
+  List<Character>? dco_decode_opt_list_character(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_list_character(raw);
+  }
+
+  @protected
+  List<Group>? dco_decode_opt_list_group(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_list_group(raw);
+  }
+
+  @protected
+  List<Parody>? dco_decode_opt_list_parody(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_list_parody(raw);
+  }
+
+  @protected
+  Int32List? dco_decode_opt_list_prim_i_32_strict(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_list_prim_i_32_strict(raw);
+  }
+
+  @protected
+  List<Tag>? dco_decode_opt_list_tag(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_list_tag(raw);
+  }
+
+  @protected
+  Parody dco_decode_parody(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return Parody(
+      parody: dco_decode_String(arr[0]),
+      url: dco_decode_String(arr[1]),
+    );
+  }
+
+  @protected
+  Tag dco_decode_tag(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    return Tag(
+      tag: dco_decode_String(arr[0]),
+      url: dco_decode_String(arr[1]),
+      female: dco_decode_opt_String(arr[2]),
+      male: dco_decode_opt_String(arr[3]),
+    );
+  }
+
+  @protected
+  int dco_decode_u_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as int;
   }
 
   @protected
@@ -294,9 +618,182 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Artist sse_decode_artist(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_artist = sse_decode_String(deserializer);
+    var var_url = sse_decode_String(deserializer);
+    return Artist(artist: var_artist, url: var_url);
+  }
+
+  @protected
+  int sse_decode_box_autoadd_i_32(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_i_32(deserializer));
+  }
+
+  @protected
+  Character sse_decode_character(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_character = sse_decode_String(deserializer);
+    var var_url = sse_decode_String(deserializer);
+    return Character(character: var_character, url: var_url);
+  }
+
+  @protected
+  GalleryFiles sse_decode_gallery_files(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_width = sse_decode_i_32(deserializer);
+    var var_hash = sse_decode_String(deserializer);
+    var var_haswebp = sse_decode_i_32(deserializer);
+    var var_name = sse_decode_String(deserializer);
+    var var_height = sse_decode_i_32(deserializer);
+    var var_hasavif = sse_decode_i_32(deserializer);
+    var var_hasavifsmalltn = sse_decode_opt_box_autoadd_i_32(deserializer);
+    return GalleryFiles(
+        width: var_width,
+        hash: var_hash,
+        haswebp: var_haswebp,
+        name: var_name,
+        height: var_height,
+        hasavif: var_hasavif,
+        hasavifsmalltn: var_hasavifsmalltn);
+  }
+
+  @protected
+  GalleryInfo sse_decode_gallery_info(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_id = sse_decode_String(deserializer);
+    var var_title = sse_decode_String(deserializer);
+    var var_japaneseTitle = sse_decode_opt_String(deserializer);
+    var var_language = sse_decode_opt_String(deserializer);
+    var var_type = sse_decode_String(deserializer);
+    var var_date = sse_decode_String(deserializer);
+    var var_artists = sse_decode_opt_list_artist(deserializer);
+    var var_groups = sse_decode_opt_list_group(deserializer);
+    var var_parodys = sse_decode_opt_list_parody(deserializer);
+    var var_tags = sse_decode_opt_list_tag(deserializer);
+    var var_related = sse_decode_list_prim_i_32_strict(deserializer);
+    var var_languages = sse_decode_list_language(deserializer);
+    var var_characters = sse_decode_opt_list_character(deserializer);
+    var var_sceneIndexes = sse_decode_opt_list_prim_i_32_strict(deserializer);
+    var var_files = sse_decode_list_gallery_files(deserializer);
+    return GalleryInfo(
+        id: var_id,
+        title: var_title,
+        japaneseTitle: var_japaneseTitle,
+        language: var_language,
+        type: var_type,
+        date: var_date,
+        artists: var_artists,
+        groups: var_groups,
+        parodys: var_parodys,
+        tags: var_tags,
+        related: var_related,
+        languages: var_languages,
+        characters: var_characters,
+        sceneIndexes: var_sceneIndexes,
+        files: var_files);
+  }
+
+  @protected
+  Group sse_decode_group(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_group = sse_decode_String(deserializer);
+    var var_url = sse_decode_String(deserializer);
+    return Group(group: var_group, url: var_url);
+  }
+
+  @protected
   int sse_decode_i_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getInt32();
+  }
+
+  @protected
+  Language sse_decode_language(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_galleryid = sse_decode_String(deserializer);
+    var var_url = sse_decode_String(deserializer);
+    var var_languageLocalname = sse_decode_String(deserializer);
+    var var_name = sse_decode_String(deserializer);
+    return Language(
+        galleryid: var_galleryid,
+        url: var_url,
+        languageLocalname: var_languageLocalname,
+        name: var_name);
+  }
+
+  @protected
+  List<Artist> sse_decode_list_artist(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <Artist>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_artist(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<Character> sse_decode_list_character(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <Character>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_character(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<GalleryFiles> sse_decode_list_gallery_files(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <GalleryFiles>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_gallery_files(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<Group> sse_decode_list_group(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <Group>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_group(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<Language> sse_decode_list_language(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <Language>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_language(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<Parody> sse_decode_list_parody(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <Parody>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_parody(deserializer));
+    }
+    return ans_;
   }
 
   @protected
@@ -314,6 +811,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<Tag> sse_decode_list_tag(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <Tag>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_tag(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   String? sse_decode_opt_String(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -322,6 +831,108 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     } else {
       return null;
     }
+  }
+
+  @protected
+  int? sse_decode_opt_box_autoadd_i_32(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_i_32(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  List<Artist>? sse_decode_opt_list_artist(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_list_artist(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  List<Character>? sse_decode_opt_list_character(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_list_character(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  List<Group>? sse_decode_opt_list_group(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_list_group(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  List<Parody>? sse_decode_opt_list_parody(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_list_parody(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  Int32List? sse_decode_opt_list_prim_i_32_strict(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_list_prim_i_32_strict(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  List<Tag>? sse_decode_opt_list_tag(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_list_tag(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  Parody sse_decode_parody(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_parody = sse_decode_String(deserializer);
+    var var_url = sse_decode_String(deserializer);
+    return Parody(parody: var_parody, url: var_url);
+  }
+
+  @protected
+  Tag sse_decode_tag(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_tag = sse_decode_String(deserializer);
+    var var_url = sse_decode_String(deserializer);
+    var var_female = sse_decode_opt_String(deserializer);
+    var var_male = sse_decode_opt_String(deserializer);
+    return Tag(tag: var_tag, url: var_url, female: var_female, male: var_male);
+  }
+
+  @protected
+  int sse_decode_u_32(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getUint32();
   }
 
   @protected
@@ -355,9 +966,133 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_artist(Artist self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.artist, serializer);
+    sse_encode_String(self.url, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_i_32(int self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self, serializer);
+  }
+
+  @protected
+  void sse_encode_character(Character self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.character, serializer);
+    sse_encode_String(self.url, serializer);
+  }
+
+  @protected
+  void sse_encode_gallery_files(GalleryFiles self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.width, serializer);
+    sse_encode_String(self.hash, serializer);
+    sse_encode_i_32(self.haswebp, serializer);
+    sse_encode_String(self.name, serializer);
+    sse_encode_i_32(self.height, serializer);
+    sse_encode_i_32(self.hasavif, serializer);
+    sse_encode_opt_box_autoadd_i_32(self.hasavifsmalltn, serializer);
+  }
+
+  @protected
+  void sse_encode_gallery_info(GalleryInfo self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.id, serializer);
+    sse_encode_String(self.title, serializer);
+    sse_encode_opt_String(self.japaneseTitle, serializer);
+    sse_encode_opt_String(self.language, serializer);
+    sse_encode_String(self.type, serializer);
+    sse_encode_String(self.date, serializer);
+    sse_encode_opt_list_artist(self.artists, serializer);
+    sse_encode_opt_list_group(self.groups, serializer);
+    sse_encode_opt_list_parody(self.parodys, serializer);
+    sse_encode_opt_list_tag(self.tags, serializer);
+    sse_encode_list_prim_i_32_strict(self.related, serializer);
+    sse_encode_list_language(self.languages, serializer);
+    sse_encode_opt_list_character(self.characters, serializer);
+    sse_encode_opt_list_prim_i_32_strict(self.sceneIndexes, serializer);
+    sse_encode_list_gallery_files(self.files, serializer);
+  }
+
+  @protected
+  void sse_encode_group(Group self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.group, serializer);
+    sse_encode_String(self.url, serializer);
+  }
+
+  @protected
   void sse_encode_i_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putInt32(self);
+  }
+
+  @protected
+  void sse_encode_language(Language self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.galleryid, serializer);
+    sse_encode_String(self.url, serializer);
+    sse_encode_String(self.languageLocalname, serializer);
+    sse_encode_String(self.name, serializer);
+  }
+
+  @protected
+  void sse_encode_list_artist(List<Artist> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_artist(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_character(
+      List<Character> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_character(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_gallery_files(
+      List<GalleryFiles> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_gallery_files(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_group(List<Group> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_group(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_language(List<Language> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_language(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_parody(List<Parody> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_parody(item, serializer);
+    }
   }
 
   @protected
@@ -377,6 +1112,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_list_tag(List<Tag> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_tag(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_String(String? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -384,6 +1128,102 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     if (self != null) {
       sse_encode_String(self, serializer);
     }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_i_32(int? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_i_32(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_list_artist(
+      List<Artist>? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_list_artist(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_list_character(
+      List<Character>? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_list_character(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_list_group(List<Group>? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_list_group(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_list_parody(
+      List<Parody>? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_list_parody(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_list_prim_i_32_strict(
+      Int32List? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_list_prim_i_32_strict(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_list_tag(List<Tag>? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_list_tag(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_parody(Parody self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.parody, serializer);
+    sse_encode_String(self.url, serializer);
+  }
+
+  @protected
+  void sse_encode_tag(Tag self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.tag, serializer);
+    sse_encode_String(self.url, serializer);
+    sse_encode_opt_String(self.female, serializer);
+    sse_encode_opt_String(self.male, serializer);
+  }
+
+  @protected
+  void sse_encode_u_32(int self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putUint32(self);
   }
 
   @protected

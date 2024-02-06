@@ -13,3 +13,7 @@ Future<String> generateUrlByArea(
         dynamic hint}) =>
     RustLib.instance.api.generateUrlByArea(
         area: area, tag: tag, language: language, hint: hint);
+
+Future<String> generateUrlByGalleryId({required int galleryId, dynamic hint}) =>
+    RustLib.instance.api
+        .generateUrlByGalleryId(galleryId: galleryId, hint: hint);

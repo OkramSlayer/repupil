@@ -38,6 +38,43 @@ flutter_rust_bridge::frb_generated_default_handler!();
 
 // Section: wire_funcs
 
+fn wire_get_gallery_data_from_id_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "get_gallery_data_from_id",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_gallery_id = <u32>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse(
+                    (move || async move {
+                        Result::<_, ()>::Ok(
+                            crate::api::gallery::get_gallery_data_from_id(api_gallery_id).await,
+                        )
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire_get_gallery_ids_from_nozomi_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -183,6 +220,71 @@ fn wire_generate_url_by_area_impl(
         },
     )
 }
+fn wire_generate_url_by_gallery_id_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "generate_url_by_gallery_id",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_gallery_id = <u32>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| {
+                transform_result_sse((move || {
+                    Result::<_, ()>::Ok(
+                        crate::api::utils::generate_url::generate_url_by_gallery_id(api_gallery_id),
+                    )
+                })())
+            }
+        },
+    )
+}
+fn wire_GalleryInfo_new_empty_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "GalleryInfo_new_empty",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            deserializer.end();
+            move |context| {
+                transform_result_sse((move || {
+                    Result::<_, ()>::Ok(crate::api::utils::get_data::GalleryInfo::new_empty())
+                })())
+            }
+        },
+    )
+}
 fn wire_get_data_from_url_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -221,6 +323,44 @@ fn wire_get_data_from_url_impl(
         },
     )
 }
+fn wire_get_gallery_data_from_url_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "get_gallery_data_from_url",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_gallery_url = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse(
+                    (move || async move {
+                        Result::<_, ()>::Ok(
+                            crate::api::utils::get_data::get_gallery_data_from_url(api_gallery_url)
+                                .await,
+                        )
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 
 // Section: dart2rust
 
@@ -240,10 +380,213 @@ impl SseDecode for String {
     }
 }
 
+impl SseDecode for crate::api::utils::get_data::Artist {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_artist = <String>::sse_decode(deserializer);
+        let mut var_url = <String>::sse_decode(deserializer);
+        return crate::api::utils::get_data::Artist {
+            artist: var_artist,
+            url: var_url,
+        };
+    }
+}
+
+impl SseDecode for crate::api::utils::get_data::Character {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_character = <String>::sse_decode(deserializer);
+        let mut var_url = <String>::sse_decode(deserializer);
+        return crate::api::utils::get_data::Character {
+            character: var_character,
+            url: var_url,
+        };
+    }
+}
+
+impl SseDecode for crate::api::utils::get_data::GalleryFiles {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_width = <i32>::sse_decode(deserializer);
+        let mut var_hash = <String>::sse_decode(deserializer);
+        let mut var_haswebp = <i32>::sse_decode(deserializer);
+        let mut var_name = <String>::sse_decode(deserializer);
+        let mut var_height = <i32>::sse_decode(deserializer);
+        let mut var_hasavif = <i32>::sse_decode(deserializer);
+        let mut var_hasavifsmalltn = <Option<i32>>::sse_decode(deserializer);
+        return crate::api::utils::get_data::GalleryFiles {
+            width: var_width,
+            hash: var_hash,
+            haswebp: var_haswebp,
+            name: var_name,
+            height: var_height,
+            hasavif: var_hasavif,
+            hasavifsmalltn: var_hasavifsmalltn,
+        };
+    }
+}
+
+impl SseDecode for crate::api::utils::get_data::GalleryInfo {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_id = <String>::sse_decode(deserializer);
+        let mut var_title = <String>::sse_decode(deserializer);
+        let mut var_japaneseTitle = <Option<String>>::sse_decode(deserializer);
+        let mut var_language = <Option<String>>::sse_decode(deserializer);
+        let mut var_type = <String>::sse_decode(deserializer);
+        let mut var_date = <String>::sse_decode(deserializer);
+        let mut var_artists =
+            <Option<Vec<crate::api::utils::get_data::Artist>>>::sse_decode(deserializer);
+        let mut var_groups =
+            <Option<Vec<crate::api::utils::get_data::Group>>>::sse_decode(deserializer);
+        let mut var_parodys =
+            <Option<Vec<crate::api::utils::get_data::Parody>>>::sse_decode(deserializer);
+        let mut var_tags =
+            <Option<Vec<crate::api::utils::get_data::Tag>>>::sse_decode(deserializer);
+        let mut var_related = <Vec<i32>>::sse_decode(deserializer);
+        let mut var_languages =
+            <Vec<crate::api::utils::get_data::Language>>::sse_decode(deserializer);
+        let mut var_characters =
+            <Option<Vec<crate::api::utils::get_data::Character>>>::sse_decode(deserializer);
+        let mut var_sceneIndexes = <Option<Vec<i32>>>::sse_decode(deserializer);
+        let mut var_files =
+            <Vec<crate::api::utils::get_data::GalleryFiles>>::sse_decode(deserializer);
+        return crate::api::utils::get_data::GalleryInfo {
+            id: var_id,
+            title: var_title,
+            japanese_title: var_japaneseTitle,
+            language: var_language,
+            type_: var_type,
+            date: var_date,
+            artists: var_artists,
+            groups: var_groups,
+            parodys: var_parodys,
+            tags: var_tags,
+            related: var_related,
+            languages: var_languages,
+            characters: var_characters,
+            scene_indexes: var_sceneIndexes,
+            files: var_files,
+        };
+    }
+}
+
+impl SseDecode for crate::api::utils::get_data::Group {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_group = <String>::sse_decode(deserializer);
+        let mut var_url = <String>::sse_decode(deserializer);
+        return crate::api::utils::get_data::Group {
+            group: var_group,
+            url: var_url,
+        };
+    }
+}
+
 impl SseDecode for i32 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         deserializer.cursor.read_i32::<NativeEndian>().unwrap()
+    }
+}
+
+impl SseDecode for crate::api::utils::get_data::Language {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_galleryid = <String>::sse_decode(deserializer);
+        let mut var_url = <String>::sse_decode(deserializer);
+        let mut var_languageLocalname = <String>::sse_decode(deserializer);
+        let mut var_name = <String>::sse_decode(deserializer);
+        return crate::api::utils::get_data::Language {
+            galleryid: var_galleryid,
+            url: var_url,
+            language_localname: var_languageLocalname,
+            name: var_name,
+        };
+    }
+}
+
+impl SseDecode for Vec<crate::api::utils::get_data::Artist> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::utils::get_data::Artist>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::api::utils::get_data::Character> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::utils::get_data::Character>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::api::utils::get_data::GalleryFiles> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::utils::get_data::GalleryFiles>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::api::utils::get_data::Group> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::utils::get_data::Group>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::api::utils::get_data::Language> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::utils::get_data::Language>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::api::utils::get_data::Parody> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::utils::get_data::Parody>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
     }
 }
 
@@ -271,6 +614,18 @@ impl SseDecode for Vec<u8> {
     }
 }
 
+impl SseDecode for Vec<crate::api::utils::get_data::Tag> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::utils::get_data::Tag>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Option<String> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -279,6 +634,128 @@ impl SseDecode for Option<String> {
         } else {
             return None;
         }
+    }
+}
+
+impl SseDecode for Option<i32> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<i32>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<Vec<crate::api::utils::get_data::Artist>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<Vec<crate::api::utils::get_data::Artist>>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<Vec<crate::api::utils::get_data::Character>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<Vec<crate::api::utils::get_data::Character>>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<Vec<crate::api::utils::get_data::Group>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<Vec<crate::api::utils::get_data::Group>>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<Vec<crate::api::utils::get_data::Parody>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<Vec<crate::api::utils::get_data::Parody>>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<Vec<i32>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<Vec<i32>>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<Vec<crate::api::utils::get_data::Tag>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<Vec<crate::api::utils::get_data::Tag>>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for crate::api::utils::get_data::Parody {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_parody = <String>::sse_decode(deserializer);
+        let mut var_url = <String>::sse_decode(deserializer);
+        return crate::api::utils::get_data::Parody {
+            parody: var_parody,
+            url: var_url,
+        };
+    }
+}
+
+impl SseDecode for crate::api::utils::get_data::Tag {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_tag = <String>::sse_decode(deserializer);
+        let mut var_url = <String>::sse_decode(deserializer);
+        let mut var_female = <Option<String>>::sse_decode(deserializer);
+        let mut var_male = <Option<String>>::sse_decode(deserializer);
+        return crate::api::utils::get_data::Tag {
+            tag: var_tag,
+            url: var_url,
+            female: var_female,
+            male: var_male,
+        };
+    }
+}
+
+impl SseDecode for u32 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        deserializer.cursor.read_u32::<NativeEndian>().unwrap()
     }
 }
 
@@ -310,11 +787,15 @@ fn pde_ffi_dispatcher_primary_impl(
 ) {
     // Codec=Pde (Serialization + dispatch), see doc to use other codecs
     match func_id {
+        3 => wire_get_gallery_data_from_id_impl(port, ptr, rust_vec_len, data_len),
         2 => wire_get_gallery_ids_from_nozomi_impl(port, ptr, rust_vec_len, data_len),
         1 => wire_greet_impl(port, ptr, rust_vec_len, data_len),
-        3 => wire_init_app_impl(port, ptr, rust_vec_len, data_len),
-        4 => wire_generate_url_by_area_impl(port, ptr, rust_vec_len, data_len),
-        5 => wire_get_data_from_url_impl(port, ptr, rust_vec_len, data_len),
+        4 => wire_init_app_impl(port, ptr, rust_vec_len, data_len),
+        5 => wire_generate_url_by_area_impl(port, ptr, rust_vec_len, data_len),
+        6 => wire_generate_url_by_gallery_id_impl(port, ptr, rust_vec_len, data_len),
+        9 => wire_GalleryInfo_new_empty_impl(port, ptr, rust_vec_len, data_len),
+        7 => wire_get_data_from_url_impl(port, ptr, rust_vec_len, data_len),
+        8 => wire_get_gallery_data_from_url_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -333,6 +814,197 @@ fn pde_ffi_dispatcher_sync_impl(
 
 // Section: rust2dart
 
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::utils::get_data::Artist {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.artist.into_into_dart().into_dart(),
+            self.url.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::utils::get_data::Artist
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::utils::get_data::Artist>
+    for crate::api::utils::get_data::Artist
+{
+    fn into_into_dart(self) -> crate::api::utils::get_data::Artist {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::utils::get_data::Character {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.character.into_into_dart().into_dart(),
+            self.url.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::utils::get_data::Character
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::utils::get_data::Character>
+    for crate::api::utils::get_data::Character
+{
+    fn into_into_dart(self) -> crate::api::utils::get_data::Character {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::utils::get_data::GalleryFiles {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.width.into_into_dart().into_dart(),
+            self.hash.into_into_dart().into_dart(),
+            self.haswebp.into_into_dart().into_dart(),
+            self.name.into_into_dart().into_dart(),
+            self.height.into_into_dart().into_dart(),
+            self.hasavif.into_into_dart().into_dart(),
+            self.hasavifsmalltn.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::utils::get_data::GalleryFiles
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::utils::get_data::GalleryFiles>
+    for crate::api::utils::get_data::GalleryFiles
+{
+    fn into_into_dart(self) -> crate::api::utils::get_data::GalleryFiles {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::utils::get_data::GalleryInfo {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.id.into_into_dart().into_dart(),
+            self.title.into_into_dart().into_dart(),
+            self.japanese_title.into_into_dart().into_dart(),
+            self.language.into_into_dart().into_dart(),
+            self.type_.into_into_dart().into_dart(),
+            self.date.into_into_dart().into_dart(),
+            self.artists.into_into_dart().into_dart(),
+            self.groups.into_into_dart().into_dart(),
+            self.parodys.into_into_dart().into_dart(),
+            self.tags.into_into_dart().into_dart(),
+            self.related.into_into_dart().into_dart(),
+            self.languages.into_into_dart().into_dart(),
+            self.characters.into_into_dart().into_dart(),
+            self.scene_indexes.into_into_dart().into_dart(),
+            self.files.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::utils::get_data::GalleryInfo
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::utils::get_data::GalleryInfo>
+    for crate::api::utils::get_data::GalleryInfo
+{
+    fn into_into_dart(self) -> crate::api::utils::get_data::GalleryInfo {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::utils::get_data::Group {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.group.into_into_dart().into_dart(),
+            self.url.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::utils::get_data::Group
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::utils::get_data::Group>
+    for crate::api::utils::get_data::Group
+{
+    fn into_into_dart(self) -> crate::api::utils::get_data::Group {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::utils::get_data::Language {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.galleryid.into_into_dart().into_dart(),
+            self.url.into_into_dart().into_dart(),
+            self.language_localname.into_into_dart().into_dart(),
+            self.name.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::utils::get_data::Language
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::utils::get_data::Language>
+    for crate::api::utils::get_data::Language
+{
+    fn into_into_dart(self) -> crate::api::utils::get_data::Language {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::utils::get_data::Parody {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.parody.into_into_dart().into_dart(),
+            self.url.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::utils::get_data::Parody
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::utils::get_data::Parody>
+    for crate::api::utils::get_data::Parody
+{
+    fn into_into_dart(self) -> crate::api::utils::get_data::Parody {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::utils::get_data::Tag {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.tag.into_into_dart().into_dart(),
+            self.url.into_into_dart().into_dart(),
+            self.female.into_into_dart().into_dart(),
+            self.male.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::utils::get_data::Tag
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::utils::get_data::Tag>
+    for crate::api::utils::get_data::Tag
+{
+    fn into_into_dart(self) -> crate::api::utils::get_data::Tag {
+        self
+    }
+}
+
 impl SseEncode for std::collections::HashSet<i32> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -347,10 +1019,141 @@ impl SseEncode for String {
     }
 }
 
+impl SseEncode for crate::api::utils::get_data::Artist {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.artist, serializer);
+        <String>::sse_encode(self.url, serializer);
+    }
+}
+
+impl SseEncode for crate::api::utils::get_data::Character {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.character, serializer);
+        <String>::sse_encode(self.url, serializer);
+    }
+}
+
+impl SseEncode for crate::api::utils::get_data::GalleryFiles {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.width, serializer);
+        <String>::sse_encode(self.hash, serializer);
+        <i32>::sse_encode(self.haswebp, serializer);
+        <String>::sse_encode(self.name, serializer);
+        <i32>::sse_encode(self.height, serializer);
+        <i32>::sse_encode(self.hasavif, serializer);
+        <Option<i32>>::sse_encode(self.hasavifsmalltn, serializer);
+    }
+}
+
+impl SseEncode for crate::api::utils::get_data::GalleryInfo {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.id, serializer);
+        <String>::sse_encode(self.title, serializer);
+        <Option<String>>::sse_encode(self.japanese_title, serializer);
+        <Option<String>>::sse_encode(self.language, serializer);
+        <String>::sse_encode(self.type_, serializer);
+        <String>::sse_encode(self.date, serializer);
+        <Option<Vec<crate::api::utils::get_data::Artist>>>::sse_encode(self.artists, serializer);
+        <Option<Vec<crate::api::utils::get_data::Group>>>::sse_encode(self.groups, serializer);
+        <Option<Vec<crate::api::utils::get_data::Parody>>>::sse_encode(self.parodys, serializer);
+        <Option<Vec<crate::api::utils::get_data::Tag>>>::sse_encode(self.tags, serializer);
+        <Vec<i32>>::sse_encode(self.related, serializer);
+        <Vec<crate::api::utils::get_data::Language>>::sse_encode(self.languages, serializer);
+        <Option<Vec<crate::api::utils::get_data::Character>>>::sse_encode(
+            self.characters,
+            serializer,
+        );
+        <Option<Vec<i32>>>::sse_encode(self.scene_indexes, serializer);
+        <Vec<crate::api::utils::get_data::GalleryFiles>>::sse_encode(self.files, serializer);
+    }
+}
+
+impl SseEncode for crate::api::utils::get_data::Group {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.group, serializer);
+        <String>::sse_encode(self.url, serializer);
+    }
+}
+
 impl SseEncode for i32 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         serializer.cursor.write_i32::<NativeEndian>(self).unwrap();
+    }
+}
+
+impl SseEncode for crate::api::utils::get_data::Language {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.galleryid, serializer);
+        <String>::sse_encode(self.url, serializer);
+        <String>::sse_encode(self.language_localname, serializer);
+        <String>::sse_encode(self.name, serializer);
+    }
+}
+
+impl SseEncode for Vec<crate::api::utils::get_data::Artist> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::utils::get_data::Artist>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::api::utils::get_data::Character> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::utils::get_data::Character>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::api::utils::get_data::GalleryFiles> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::utils::get_data::GalleryFiles>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::api::utils::get_data::Group> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::utils::get_data::Group>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::api::utils::get_data::Language> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::utils::get_data::Language>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::api::utils::get_data::Parody> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::utils::get_data::Parody>::sse_encode(item, serializer);
+        }
     }
 }
 
@@ -374,6 +1177,16 @@ impl SseEncode for Vec<u8> {
     }
 }
 
+impl SseEncode for Vec<crate::api::utils::get_data::Tag> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::utils::get_data::Tag>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<String> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -381,6 +1194,101 @@ impl SseEncode for Option<String> {
         if let Some(value) = self {
             <String>::sse_encode(value, serializer);
         }
+    }
+}
+
+impl SseEncode for Option<i32> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <i32>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<Vec<crate::api::utils::get_data::Artist>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <Vec<crate::api::utils::get_data::Artist>>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<Vec<crate::api::utils::get_data::Character>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <Vec<crate::api::utils::get_data::Character>>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<Vec<crate::api::utils::get_data::Group>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <Vec<crate::api::utils::get_data::Group>>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<Vec<crate::api::utils::get_data::Parody>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <Vec<crate::api::utils::get_data::Parody>>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<Vec<i32>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <Vec<i32>>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<Vec<crate::api::utils::get_data::Tag>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <Vec<crate::api::utils::get_data::Tag>>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for crate::api::utils::get_data::Parody {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.parody, serializer);
+        <String>::sse_encode(self.url, serializer);
+    }
+}
+
+impl SseEncode for crate::api::utils::get_data::Tag {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.tag, serializer);
+        <String>::sse_encode(self.url, serializer);
+        <Option<String>>::sse_encode(self.female, serializer);
+        <Option<String>>::sse_encode(self.male, serializer);
+    }
+}
+
+impl SseEncode for u32 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        serializer.cursor.write_u32::<NativeEndian>(self).unwrap();
     }
 }
 

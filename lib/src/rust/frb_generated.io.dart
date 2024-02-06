@@ -27,7 +27,46 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String dco_decode_String(dynamic raw);
 
   @protected
+  Artist dco_decode_artist(dynamic raw);
+
+  @protected
+  int dco_decode_box_autoadd_i_32(dynamic raw);
+
+  @protected
+  Character dco_decode_character(dynamic raw);
+
+  @protected
+  GalleryFiles dco_decode_gallery_files(dynamic raw);
+
+  @protected
+  GalleryInfo dco_decode_gallery_info(dynamic raw);
+
+  @protected
+  Group dco_decode_group(dynamic raw);
+
+  @protected
   int dco_decode_i_32(dynamic raw);
+
+  @protected
+  Language dco_decode_language(dynamic raw);
+
+  @protected
+  List<Artist> dco_decode_list_artist(dynamic raw);
+
+  @protected
+  List<Character> dco_decode_list_character(dynamic raw);
+
+  @protected
+  List<GalleryFiles> dco_decode_list_gallery_files(dynamic raw);
+
+  @protected
+  List<Group> dco_decode_list_group(dynamic raw);
+
+  @protected
+  List<Language> dco_decode_list_language(dynamic raw);
+
+  @protected
+  List<Parody> dco_decode_list_parody(dynamic raw);
 
   @protected
   Int32List dco_decode_list_prim_i_32_strict(dynamic raw);
@@ -36,7 +75,40 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
 
   @protected
+  List<Tag> dco_decode_list_tag(dynamic raw);
+
+  @protected
   String? dco_decode_opt_String(dynamic raw);
+
+  @protected
+  int? dco_decode_opt_box_autoadd_i_32(dynamic raw);
+
+  @protected
+  List<Artist>? dco_decode_opt_list_artist(dynamic raw);
+
+  @protected
+  List<Character>? dco_decode_opt_list_character(dynamic raw);
+
+  @protected
+  List<Group>? dco_decode_opt_list_group(dynamic raw);
+
+  @protected
+  List<Parody>? dco_decode_opt_list_parody(dynamic raw);
+
+  @protected
+  Int32List? dco_decode_opt_list_prim_i_32_strict(dynamic raw);
+
+  @protected
+  List<Tag>? dco_decode_opt_list_tag(dynamic raw);
+
+  @protected
+  Parody dco_decode_parody(dynamic raw);
+
+  @protected
+  Tag dco_decode_tag(dynamic raw);
+
+  @protected
+  int dco_decode_u_32(dynamic raw);
 
   @protected
   int dco_decode_u_8(dynamic raw);
@@ -51,7 +123,47 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String sse_decode_String(SseDeserializer deserializer);
 
   @protected
+  Artist sse_decode_artist(SseDeserializer deserializer);
+
+  @protected
+  int sse_decode_box_autoadd_i_32(SseDeserializer deserializer);
+
+  @protected
+  Character sse_decode_character(SseDeserializer deserializer);
+
+  @protected
+  GalleryFiles sse_decode_gallery_files(SseDeserializer deserializer);
+
+  @protected
+  GalleryInfo sse_decode_gallery_info(SseDeserializer deserializer);
+
+  @protected
+  Group sse_decode_group(SseDeserializer deserializer);
+
+  @protected
   int sse_decode_i_32(SseDeserializer deserializer);
+
+  @protected
+  Language sse_decode_language(SseDeserializer deserializer);
+
+  @protected
+  List<Artist> sse_decode_list_artist(SseDeserializer deserializer);
+
+  @protected
+  List<Character> sse_decode_list_character(SseDeserializer deserializer);
+
+  @protected
+  List<GalleryFiles> sse_decode_list_gallery_files(
+      SseDeserializer deserializer);
+
+  @protected
+  List<Group> sse_decode_list_group(SseDeserializer deserializer);
+
+  @protected
+  List<Language> sse_decode_list_language(SseDeserializer deserializer);
+
+  @protected
+  List<Parody> sse_decode_list_parody(SseDeserializer deserializer);
 
   @protected
   Int32List sse_decode_list_prim_i_32_strict(SseDeserializer deserializer);
@@ -60,7 +172,40 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
 
   @protected
+  List<Tag> sse_decode_list_tag(SseDeserializer deserializer);
+
+  @protected
   String? sse_decode_opt_String(SseDeserializer deserializer);
+
+  @protected
+  int? sse_decode_opt_box_autoadd_i_32(SseDeserializer deserializer);
+
+  @protected
+  List<Artist>? sse_decode_opt_list_artist(SseDeserializer deserializer);
+
+  @protected
+  List<Character>? sse_decode_opt_list_character(SseDeserializer deserializer);
+
+  @protected
+  List<Group>? sse_decode_opt_list_group(SseDeserializer deserializer);
+
+  @protected
+  List<Parody>? sse_decode_opt_list_parody(SseDeserializer deserializer);
+
+  @protected
+  Int32List? sse_decode_opt_list_prim_i_32_strict(SseDeserializer deserializer);
+
+  @protected
+  List<Tag>? sse_decode_opt_list_tag(SseDeserializer deserializer);
+
+  @protected
+  Parody sse_decode_parody(SseDeserializer deserializer);
+
+  @protected
+  Tag sse_decode_tag(SseDeserializer deserializer);
+
+  @protected
+  int sse_decode_u_32(SseDeserializer deserializer);
 
   @protected
   int sse_decode_u_8(SseDeserializer deserializer);
@@ -78,7 +223,48 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_String(String self, SseSerializer serializer);
 
   @protected
+  void sse_encode_artist(Artist self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_i_32(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_character(Character self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_gallery_files(GalleryFiles self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_gallery_info(GalleryInfo self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_group(Group self, SseSerializer serializer);
+
+  @protected
   void sse_encode_i_32(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_language(Language self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_artist(List<Artist> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_character(
+      List<Character> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_gallery_files(
+      List<GalleryFiles> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_group(List<Group> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_language(List<Language> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_parody(List<Parody> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_prim_i_32_strict(
@@ -89,7 +275,42 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       Uint8List self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_tag(List<Tag> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_String(String? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_i_32(int? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_list_artist(List<Artist>? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_list_character(
+      List<Character>? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_list_group(List<Group>? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_list_parody(List<Parody>? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_list_prim_i_32_strict(
+      Int32List? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_list_tag(List<Tag>? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_parody(Parody self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_tag(Tag self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_u_32(int self, SseSerializer serializer);
 
   @protected
   void sse_encode_u_8(int self, SseSerializer serializer);

@@ -19,6 +19,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    getGalleryDataFromId(galleryId: 2819636);
     getGalleryIdsFromNozomi(language: "all", area: "", tag: "popular")
         .then((result) => {
               setState(() {

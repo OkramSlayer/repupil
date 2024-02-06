@@ -16,3 +16,6 @@ Future<Set<int>> getGalleryIdsFromNozomi(
         dynamic hint}) =>
     RustLib.instance.api.getGalleryIdsFromNozomi(
         area: area, tag: tag, language: language, hint: hint);
+
+Future<void> getGalleryDataFromId({required int galleryId, dynamic hint}) =>
+    RustLib.instance.api.getGalleryDataFromId(galleryId: galleryId, hint: hint);
