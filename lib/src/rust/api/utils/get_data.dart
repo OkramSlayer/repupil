@@ -6,7 +6,7 @@
 import '../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-Future<Set<int>> getDataFromUrl(
+Future<Int32List> getDataFromUrl(
         {required String nozomiAddress, dynamic hint}) =>
     RustLib.instance.api
         .getDataFromUrl(nozomiAddress: nozomiAddress, hint: hint);

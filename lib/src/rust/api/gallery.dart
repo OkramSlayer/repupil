@@ -5,11 +5,12 @@
 
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'utils/get_data.dart';
 
 Future<String> greet({required String name, dynamic hint}) =>
     RustLib.instance.api.greet(name: name, hint: hint);
 
-Future<Set<int>> getGalleryIdsFromNozomi(
+Future<Int32List> getGalleryIdsFromNozomi(
         {String? area,
         required String tag,
         required String language,
@@ -17,5 +18,6 @@ Future<Set<int>> getGalleryIdsFromNozomi(
     RustLib.instance.api.getGalleryIdsFromNozomi(
         area: area, tag: tag, language: language, hint: hint);
 
-Future<void> getGalleryDataFromId({required int galleryId, dynamic hint}) =>
+Future<GalleryInfo> getGalleryDataFromId(
+        {required int galleryId, dynamic hint}) =>
     RustLib.instance.api.getGalleryDataFromId(galleryId: galleryId, hint: hint);

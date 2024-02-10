@@ -364,14 +364,6 @@ fn wire_get_gallery_data_from_url_impl(
 
 // Section: dart2rust
 
-impl SseDecode for std::collections::HashSet<i32> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner = <Vec<i32>>::sse_decode(deserializer);
-        return inner.into_iter().collect();
-    }
-}
-
 impl SseDecode for String {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1002,13 +994,6 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::utils::get_data::Tag>
 {
     fn into_into_dart(self) -> crate::api::utils::get_data::Tag {
         self
-    }
-}
-
-impl SseEncode for std::collections::HashSet<i32> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <Vec<i32>>::sse_encode(self.into_iter().collect(), serializer);
     }
 }
 

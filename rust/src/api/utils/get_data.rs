@@ -1,7 +1,7 @@
 use byteorder::{BigEndian, ReadBytesExt};
-use std::{collections::HashSet, fmt};
+use std::fmt;
 use std::io::Cursor;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Deserializer, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Artist {
@@ -27,7 +27,7 @@ pub struct Character {
     pub url: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize)]
 pub struct Tag {
     pub tag: String,
     pub url: String,
@@ -54,7 +54,7 @@ pub struct GalleryFiles {
     pub hasavifsmalltn: Option<i32>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize)]
 pub struct GalleryInfo {
     pub id: String,
     pub title: String,
@@ -120,12 +120,12 @@ impl fmt::Display for GalleryInfo {
     }
 }
 
-pub async fn get_data_from_url(nozomi_address: String) -> HashSet<i32> {
+pub async fn get_data_from_url(nozomi_address: String) -> Vec<i32> {
     let response = match reqwest::get(&nozomi_address).await {
         Ok(res) => res,
         Err(e) => {
             eprintln!("Error: {}", e);
-            return HashSet::new();
+            return Vec::new();
         }
     };
 
@@ -133,15 +133,15 @@ pub async fn get_data_from_url(nozomi_address: String) -> HashSet<i32> {
         Ok(bytes) => bytes,
         Err(e) => {
             eprintln!("Error reading response: {}", e);
-            return HashSet::new();
+            return Vec::new();
         }
     };
 
-    let mut nozomi = HashSet::new();
+    let mut nozomi = Vec::new();
     let mut cursor = Cursor::new(body);
 
     while let Ok(value) = cursor.read_i32::<BigEndian>(){
-        nozomi.insert(value);
+        nozomi.push(value);
     }
 
     return nozomi;
@@ -176,4 +176,86 @@ pub async fn get_gallery_data_from_url(gallery_url: String) -> GalleryInfo {
     };
 
     return gallery;
+}
+
+impl<'de> Deserialize<'de> for Tag {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        #[derive(Debug, Deserialize)]
+        struct TagDeserializeHelper {
+            tag: String,
+            url: String,
+            female: Option<serde_json::Value>,
+            male: Option<serde_json::Value>,
+        }
+
+        let helper: TagDeserializeHelper = Deserialize::deserialize(deserializer)?;
+
+        // Convertimos los valores de female y male en String, si son enteros los convertimos a String
+        let female = match helper.female {
+            Some(value) => Some(value.to_string()),
+            None => None,
+        };
+
+        let male = match helper.male {
+            Some(value) => Some(value.to_string()),
+            None => None,
+        };
+
+        Ok(Tag {
+            tag: helper.tag,
+            url: helper.url,
+            female,
+            male,
+        })
+    }
+}
+
+impl<'de> Deserialize<'de> for GalleryInfo {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        #[derive(Debug, Deserialize)]
+        struct GalleryInfoDeserializeHelper {
+            id: serde_json::Value,
+            title: String,
+            japanese_title: Option<String>,
+            language: Option<String>,
+            #[serde(rename = "type")]
+            type_: String,
+            date: String,
+            artists: Option<Vec<Artist>>,
+            groups: Option<Vec<Group>>,
+            parodys: Option<Vec<Parody>>,
+            tags: Option<Vec<Tag>>,
+            related: Vec<i32>,
+            languages: Vec<Language>,
+            characters: Option<Vec<Character>>,
+            scene_indexes: Option<Vec<i32>>,
+            files: Vec<GalleryFiles>,
+        }
+
+        let helper: GalleryInfoDeserializeHelper = Deserialize::deserialize(deserializer)?;
+
+        Ok(GalleryInfo {
+            id: helper.id.to_string(),
+            title: helper.title,
+            japanese_title: helper.japanese_title,
+            language: helper.language,
+            type_: helper.type_,
+            date: helper.date,
+            artists: helper.artists,
+            groups: helper.groups,
+            parodys: helper.parodys,
+            tags: helper.tags,
+            related: helper.related,
+            languages: helper.languages,
+            characters: helper.characters,
+            scene_indexes: helper.scene_indexes,
+            files: helper.files,
+        })
+    }
 }

@@ -66,9 +66,10 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 }
 
 abstract class RustLibApi extends BaseApi {
-  Future<void> getGalleryDataFromId({required int galleryId, dynamic hint});
+  Future<GalleryInfo> getGalleryDataFromId(
+      {required int galleryId, dynamic hint});
 
-  Future<Set<int>> getGalleryIdsFromNozomi(
+  Future<Int32List> getGalleryIdsFromNozomi(
       {String? area,
       required String tag,
       required String language,
@@ -88,7 +89,7 @@ abstract class RustLibApi extends BaseApi {
 
   Future<GalleryInfo> galleryInfoNewEmpty({dynamic hint});
 
-  Future<Set<int>> getDataFromUrl(
+  Future<Int32List> getDataFromUrl(
       {required String nozomiAddress, dynamic hint});
 
   Future<GalleryInfo> getGalleryDataFromUrl(
@@ -104,7 +105,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   });
 
   @override
-  Future<void> getGalleryDataFromId({required int galleryId, dynamic hint}) {
+  Future<GalleryInfo> getGalleryDataFromId(
+      {required int galleryId, dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
@@ -113,7 +115,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             funcId: 3, port: port_);
       },
       codec: SseCodec(
-        decodeSuccessData: sse_decode_unit,
+        decodeSuccessData: sse_decode_gallery_info,
         decodeErrorData: null,
       ),
       constMeta: kGetGalleryDataFromIdConstMeta,
@@ -129,7 +131,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<Set<int>> getGalleryIdsFromNozomi(
+  Future<Int32List> getGalleryIdsFromNozomi(
       {String? area,
       required String tag,
       required String language,
@@ -144,7 +146,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             funcId: 2, port: port_);
       },
       codec: SseCodec(
-        decodeSuccessData: sse_decode_Set_i_32,
+        decodeSuccessData: sse_decode_list_prim_i_32_strict,
         decodeErrorData: null,
       ),
       constMeta: kGetGalleryIdsFromNozomiConstMeta,
@@ -290,7 +292,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<Set<int>> getDataFromUrl(
+  Future<Int32List> getDataFromUrl(
       {required String nozomiAddress, dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -300,7 +302,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             funcId: 7, port: port_);
       },
       codec: SseCodec(
-        decodeSuccessData: sse_decode_Set_i_32,
+        decodeSuccessData: sse_decode_list_prim_i_32_strict,
         decodeErrorData: null,
       ),
       constMeta: kGetDataFromUrlConstMeta,
@@ -340,12 +342,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         debugName: "get_gallery_data_from_url",
         argNames: ["galleryUrl"],
       );
-
-  @protected
-  Set<int> dco_decode_Set_i_32(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return Set.from(dco_decode_list_prim_i_32_strict(raw));
-  }
 
   @protected
   String dco_decode_String(dynamic raw) {
@@ -601,13 +597,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void dco_decode_unit(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return;
-  }
-
-  @protected
-  Set<int> sse_decode_Set_i_32(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var inner = sse_decode_list_prim_i_32_strict(deserializer);
-    return Set.from(inner);
   }
 
   @protected
@@ -950,13 +939,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   bool sse_decode_bool(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getUint8() != 0;
-  }
-
-  @protected
-  void sse_encode_Set_i_32(Set<int> self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_list_prim_i_32_strict(
-        Int32List.fromList(self.toList()), serializer);
   }
 
   @protected
