@@ -13,8 +13,8 @@ class CardList extends StatefulWidget {
 
 class _CardListState extends State<CardList> {
   late ScrollController _scrollController;
-  late Int32List allGalleryIds;
-  late Int32List displayedGalleryIds;
+  Int32List allGalleryIds = Int32List.fromList(List.empty());
+  Int32List displayedGalleryIds = Int32List.fromList(List.empty());
 
   int currentPage = 1;
   int pageSize = 50;

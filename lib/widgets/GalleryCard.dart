@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:repupil/src/rust/api/gallery.dart';
-import 'package:repupil/src/rust/api/utils/get_data.dart';
+import 'package:repupil/src/rust/api/models/models.dart';
 
 class GalleryCard extends StatefulWidget {
   final int id;
@@ -29,8 +29,13 @@ class _GalleryCardState extends State<GalleryCard> {
       files: [],
     );
 
-    getGalleryDataFromId(galleryId: widget.id)
-        .then((data) => setState(() => galleryInfo = data));
+    getGalleryDataFromId(galleryId: widget.id).then((data) {
+      if (mounted) {
+        setState(() {
+          galleryInfo = data;
+        });
+      }
+    });
   }
 
   @override

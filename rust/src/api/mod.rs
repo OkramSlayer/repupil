@@ -8,3 +8,7 @@ pub mod utils{
   pub mod generate_url;
   pub mod get_data;
 }
+
+pub mod models{
+  pub mod models;
+}

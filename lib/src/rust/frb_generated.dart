@@ -4,6 +4,7 @@
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
 import 'api/gallery.dart';
+import 'api/models/models.dart';
 import 'api/utils/generate_url.dart';
 import 'api/utils/get_data.dart';
 import 'dart:async';
@@ -79,6 +80,8 @@ abstract class RustLibApi extends BaseApi {
 
   Future<void> initApp({dynamic hint});
 
+  Future<GalleryInfo> galleryInfoNewEmpty({dynamic hint});
+
   Future<String> generateUrlByArea(
       {String? area,
       required String tag,
@@ -86,8 +89,6 @@ abstract class RustLibApi extends BaseApi {
       dynamic hint});
 
   Future<String> generateUrlByGalleryId({required int galleryId, dynamic hint});
-
-  Future<GalleryInfo> galleryInfoNewEmpty({dynamic hint});
 
   Future<Int32List> getDataFromUrl(
       {required String nozomiAddress, dynamic hint});
@@ -211,6 +212,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<GalleryInfo> galleryInfoNewEmpty({dynamic hint}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 5, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_gallery_info,
+        decodeErrorData: null,
+      ),
+      constMeta: kGalleryInfoNewEmptyConstMeta,
+      argValues: [],
+      apiImpl: this,
+      hint: hint,
+    ));
+  }
+
+  TaskConstMeta get kGalleryInfoNewEmptyConstMeta => const TaskConstMeta(
+        debugName: "GalleryInfo_new_empty",
+        argNames: [],
+      );
+
+  @override
   Future<String> generateUrlByArea(
       {String? area,
       required String tag,
@@ -223,7 +248,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(tag, serializer);
         sse_encode_String(language, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 5, port: port_);
+            funcId: 6, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -249,7 +274,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_u_32(galleryId, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 6, port: port_);
+            funcId: 7, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -268,30 +293,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<GalleryInfo> galleryInfoNewEmpty({dynamic hint}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 9, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_gallery_info,
-        decodeErrorData: null,
-      ),
-      constMeta: kGalleryInfoNewEmptyConstMeta,
-      argValues: [],
-      apiImpl: this,
-      hint: hint,
-    ));
-  }
-
-  TaskConstMeta get kGalleryInfoNewEmptyConstMeta => const TaskConstMeta(
-        debugName: "GalleryInfo_new_empty",
-        argNames: [],
-      );
-
-  @override
   Future<Int32List> getDataFromUrl(
       {required String nozomiAddress, dynamic hint}) {
     return handler.executeNormal(NormalTask(
@@ -299,7 +300,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(nozomiAddress, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 7, port: port_);
+            funcId: 8, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_prim_i_32_strict,
@@ -325,7 +326,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(galleryUrl, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 8, port: port_);
+            funcId: 9, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_gallery_info,
