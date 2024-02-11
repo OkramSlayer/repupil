@@ -58,6 +58,7 @@ pub struct GalleryInfo {
     pub title: String,
     pub japanese_title: Option<String>,
     pub language: Option<String>,
+    pub cover_url: Option<String>,
     #[serde(rename = "type")]
     pub type_: String,
     pub date: String,
@@ -79,6 +80,7 @@ impl GalleryInfo {
             title: String::new(),
             japanese_title: None,
             language: None,
+            cover_url: None,
             type_: String::new(),
             date: String::new(),
             artists: None,
@@ -161,6 +163,7 @@ impl<'de> Deserialize<'de> for GalleryInfo {
           title: helper.title,
           japanese_title: helper.japanese_title,
           language: helper.language,
+          cover_url: None,
           type_: helper.type_,
           date: helper.date,
           artists: helper.artists,

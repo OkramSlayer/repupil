@@ -24,6 +24,8 @@ pub async fn get_gallery_data_from_id(gallery_id: u32) -> GalleryInfo {
     let gallery_data = get_gallery_data_from_url(gallery_url).await;
     if gallery_data.id.eq(&String::from("")) {
         eprintln!("Gallery with id: {} is empty", gallery_id);
+    } else {
+        // Get cover
     }
     return gallery_data;
 }

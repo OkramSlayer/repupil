@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:repupil/widgets/CardList.dart';
+import 'package:repupil/widgets/Gallery/CardList.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

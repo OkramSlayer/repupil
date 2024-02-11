@@ -401,24 +401,25 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   GalleryInfo dco_decode_gallery_info(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 15)
-      throw Exception('unexpected arr length: expect 15 but see ${arr.length}');
+    if (arr.length != 16)
+      throw Exception('unexpected arr length: expect 16 but see ${arr.length}');
     return GalleryInfo(
       id: dco_decode_String(arr[0]),
       title: dco_decode_String(arr[1]),
       japaneseTitle: dco_decode_opt_String(arr[2]),
       language: dco_decode_opt_String(arr[3]),
-      type: dco_decode_String(arr[4]),
-      date: dco_decode_String(arr[5]),
-      artists: dco_decode_opt_list_artist(arr[6]),
-      groups: dco_decode_opt_list_group(arr[7]),
-      parodys: dco_decode_opt_list_parody(arr[8]),
-      tags: dco_decode_opt_list_tag(arr[9]),
-      related: dco_decode_list_prim_i_32_strict(arr[10]),
-      languages: dco_decode_list_language(arr[11]),
-      characters: dco_decode_opt_list_character(arr[12]),
-      sceneIndexes: dco_decode_opt_list_prim_i_32_strict(arr[13]),
-      files: dco_decode_list_gallery_files(arr[14]),
+      coverUrl: dco_decode_opt_String(arr[4]),
+      type: dco_decode_String(arr[5]),
+      date: dco_decode_String(arr[6]),
+      artists: dco_decode_opt_list_artist(arr[7]),
+      groups: dco_decode_opt_list_group(arr[8]),
+      parodys: dco_decode_opt_list_parody(arr[9]),
+      tags: dco_decode_opt_list_tag(arr[10]),
+      related: dco_decode_list_prim_i_32_strict(arr[11]),
+      languages: dco_decode_list_language(arr[12]),
+      characters: dco_decode_opt_list_character(arr[13]),
+      sceneIndexes: dco_decode_opt_list_prim_i_32_strict(arr[14]),
+      files: dco_decode_list_gallery_files(arr[15]),
     );
   }
 
@@ -656,6 +657,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_title = sse_decode_String(deserializer);
     var var_japaneseTitle = sse_decode_opt_String(deserializer);
     var var_language = sse_decode_opt_String(deserializer);
+    var var_coverUrl = sse_decode_opt_String(deserializer);
     var var_type = sse_decode_String(deserializer);
     var var_date = sse_decode_String(deserializer);
     var var_artists = sse_decode_opt_list_artist(deserializer);
@@ -672,6 +674,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         title: var_title,
         japaneseTitle: var_japaneseTitle,
         language: var_language,
+        coverUrl: var_coverUrl,
         type: var_type,
         date: var_date,
         artists: var_artists,
@@ -987,6 +990,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_String(self.title, serializer);
     sse_encode_opt_String(self.japaneseTitle, serializer);
     sse_encode_opt_String(self.language, serializer);
+    sse_encode_opt_String(self.coverUrl, serializer);
     sse_encode_String(self.type, serializer);
     sse_encode_String(self.date, serializer);
     sse_encode_opt_list_artist(self.artists, serializer);

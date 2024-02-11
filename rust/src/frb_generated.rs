@@ -425,6 +425,7 @@ impl SseDecode for crate::api::models::models::GalleryInfo {
         let mut var_title = <String>::sse_decode(deserializer);
         let mut var_japaneseTitle = <Option<String>>::sse_decode(deserializer);
         let mut var_language = <Option<String>>::sse_decode(deserializer);
+        let mut var_coverUrl = <Option<String>>::sse_decode(deserializer);
         let mut var_type = <String>::sse_decode(deserializer);
         let mut var_date = <String>::sse_decode(deserializer);
         let mut var_artists =
@@ -447,6 +448,7 @@ impl SseDecode for crate::api::models::models::GalleryInfo {
             title: var_title,
             japanese_title: var_japaneseTitle,
             language: var_language,
+            cover_url: var_coverUrl,
             type_: var_type,
             date: var_date,
             artists: var_artists,
@@ -881,6 +883,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::models::models::GalleryInfo {
             self.title.into_into_dart().into_dart(),
             self.japanese_title.into_into_dart().into_dart(),
             self.language.into_into_dart().into_dart(),
+            self.cover_url.into_into_dart().into_dart(),
             self.type_.into_into_dart().into_dart(),
             self.date.into_into_dart().into_dart(),
             self.artists.into_into_dart().into_dart(),
@@ -1039,6 +1042,7 @@ impl SseEncode for crate::api::models::models::GalleryInfo {
         <String>::sse_encode(self.title, serializer);
         <Option<String>>::sse_encode(self.japanese_title, serializer);
         <Option<String>>::sse_encode(self.language, serializer);
+        <Option<String>>::sse_encode(self.cover_url, serializer);
         <String>::sse_encode(self.type_, serializer);
         <String>::sse_encode(self.date, serializer);
         <Option<Vec<crate::api::models::models::Artist>>>::sse_encode(self.artists, serializer);

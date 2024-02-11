@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:repupil/src/rust/api/gallery.dart';
-import 'package:repupil/widgets/GalleryCard.dart';
+import 'package:repupil/widgets/Gallery/GalleryCard.dart';
 
 class CardList extends StatefulWidget {
   const CardList({super.key});
@@ -57,9 +57,6 @@ class _CardListState extends State<CardList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Gallery List'),
-      ),
       body: ListView.builder(
         controller: _scrollController,
         itemCount: displayedGalleryIds.length + 1,

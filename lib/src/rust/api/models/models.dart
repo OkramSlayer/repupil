@@ -96,6 +96,7 @@ class GalleryInfo {
   final String title;
   final String? japaneseTitle;
   final String? language;
+  final String? coverUrl;
   final String type;
   final String date;
   final List<Artist>? artists;
@@ -113,6 +114,7 @@ class GalleryInfo {
     required this.title,
     this.japaneseTitle,
     this.language,
+    this.coverUrl,
     required this.type,
     required this.date,
     this.artists,
@@ -135,6 +137,7 @@ class GalleryInfo {
       title.hashCode ^
       japaneseTitle.hashCode ^
       language.hashCode ^
+      coverUrl.hashCode ^
       type.hashCode ^
       date.hashCode ^
       artists.hashCode ^
@@ -156,6 +159,7 @@ class GalleryInfo {
           title == other.title &&
           japaneseTitle == other.japaneseTitle &&
           language == other.language &&
+          coverUrl == other.coverUrl &&
           type == other.type &&
           date == other.date &&
           artists == other.artists &&
