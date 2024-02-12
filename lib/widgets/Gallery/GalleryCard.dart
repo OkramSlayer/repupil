@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class _GalleryCardState extends State<GalleryCard> {
           galleryInfo = data;
         });
         if (data.id.isEmpty) {
-          print("Disposed widget with id ${widget.id}");
+          log("Disposed widget with id ${widget.id}");
           WidgetsBinding.instance.addPostFrameCallback((_) {
             dispose();
           });
@@ -49,13 +50,14 @@ class _GalleryCardState extends State<GalleryCard> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4),
         child: Card(
           elevation: 4,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
           child: Container(
+            padding: const EdgeInsets.fromLTRB(0, 4, 0, 6),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -80,7 +82,7 @@ class _GalleryCardState extends State<GalleryCard> {
                           color: Colors.black87,
                         ),
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
                         'Title: ${galleryInfo.title}',
                         style: const TextStyle(

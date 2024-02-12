@@ -14,10 +14,10 @@ class CardList extends StatefulWidget {
 class _CardListState extends State<CardList> {
   late ScrollController _scrollController;
   Int32List allGalleryIds = Int32List.fromList(List.empty());
-  Int32List displayedGalleryIds = Int32List.fromList(List.empty());
-
+  List<int> displayedGalleryIds = [];
+  
   int currentPage = 1;
-  int pageSize = 50;
+  int pageSize = 25; // Change page size to 25
 
   @override
   void initState() {
@@ -26,15 +26,16 @@ class _CardListState extends State<CardList> {
     _scrollController.addListener(_scrollListener);
 
     getGalleryIdsFromNozomi(language: "all", area: "", tag: "popular")
-        .then((ids) => allGalleryIds = ids)
-        .then((value) => loadCurrentPage());
+        .then((ids) {
+      allGalleryIds = ids;
+      loadCurrentPage();
+    });
   }
 
   void _scrollListener() {
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
-      // Alcanzó el final de la lista
       loadNextPage();
     }
   }
@@ -57,18 +58,28 @@ class _CardListState extends State<CardList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        controller: _scrollController,
-        itemCount: displayedGalleryIds.length + 1,
-        itemBuilder: (context, index) {
-          if (index < displayedGalleryIds.length) {
-            return GalleryCard(id: displayedGalleryIds[index]);
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('Page: $currentPage'),
+          ),
+          Expanded(
+            child: ListView.builder(
+              controller: _scrollController,
+              itemCount: displayedGalleryIds.length + 1,
+              itemBuilder: (context, index) {
+                if (index < displayedGalleryIds.length) {
+                  return GalleryCard(id: displayedGalleryIds[index]);
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -113,11 +113,13 @@ impl<'de> Deserialize<'de> for Tag {
 
       // Convertimos los valores de female y male en String, si son enteros los convertimos a String
       let female = match helper.female {
+          Some(serde_json::Value::String(s)) => Some(s),
           Some(value) => Some(value.to_string()),
           None => None,
       };
 
       let male = match helper.male {
+          Some(serde_json::Value::String(s)) => Some(s),
           Some(value) => Some(value.to_string()),
           None => None,
       };
